@@ -1,10 +1,7 @@
 import 'reflect-metadata';
 import { defaultMetadataStorage } from 'class-transformer/cjs/';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
 import express from 'express';
-import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import { useExpressServer, getMetadataArgsStorage, useContainer } from 'routing-controllers';
@@ -49,11 +46,8 @@ class App {
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(hpp());
-    this.app.use(helmet());
-    this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(cookieParser());
   }
 
   private initializeRoutes(controllers: Function[]) {
@@ -89,8 +83,8 @@ class App {
         },
       },
       info: {
-        description: 'Generated with `routing-controllers-openapi`',
-        title: 'A sample API',
+        description: 'Simplex homework to create quote API`',
+        title: 'Quote API',
         version: '1.0.0',
       },
     });
