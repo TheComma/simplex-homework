@@ -8,8 +8,8 @@ import { Service } from 'typedi';
 export class IndexController {
   constructor(private quoteService: QuoteService) {}
 
-  @Get('/')
-  index() {
+  @Get('/health')
+  health() {
     return 'OK';
   }
 
