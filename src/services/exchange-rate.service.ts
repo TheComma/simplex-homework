@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Service } from 'typedi';
 
 @Service()
-export default class ExchangeRateService {
+export class ExchangeRateService {
   private EXCHANGE_RATE_API_URL = 'https://api.exchangerate-api.com/v4/latest/';
 
   public async getExchangeRate(baseCurrency: string, quoteCurrency: string): Promise<number> {

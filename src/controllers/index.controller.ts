@@ -1,7 +1,7 @@
 import { QuoteRequestDto } from '@/dtos/QuoteRequestDto';
 import { validationMiddleware } from '@/middlewares/validation.middleware';
 import { Controller, Get, QueryParams, UseBefore } from 'routing-controllers';
-import QuoteService from '@/services/quote.service';
+import { QuoteService } from '@/services/quote.service';
 import { Service } from 'typedi';
 @Service()
 @Controller()
