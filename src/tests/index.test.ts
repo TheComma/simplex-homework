@@ -1,6 +1,6 @@
 import request from 'supertest';
-import App from '@/app';
-import { IndexController } from '@controllers/index.controller';
+import App from '../app';
+import { IndexController } from '../controllers/index.controller';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -12,6 +12,16 @@ describe('Testing Index', () => {
       const app = new App([IndexController]);
 
       return request(app.getServer()).get('/').expect(200);
+    });
+  });
+
+  describe('[GET] /quote', () => {
+    it('response statusCode 200', () => {
+      const app = new App([IndexController]);
+
+      return request(app.getServer())
+        .get('/quote?baseCurrency=USD&quoteCurency=EUR&baseAmount=100')
+        .expect(200, { exchangeRate: 1.01, quoteAmount: 101 });
     });
   });
 });
