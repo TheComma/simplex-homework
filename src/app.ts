@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import { useExpressServer, getMetadataArgsStorage, useContainer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+import { NODE_ENV, PORT, LOG_FORMAT } from '@config';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import Container from 'typedi';
@@ -52,10 +52,6 @@ class App {
 
   private initializeRoutes(controllers: Function[]) {
     useExpressServer(this.app, {
-      cors: {
-        origin: ORIGIN,
-        credentials: CREDENTIALS,
-      },
       controllers: controllers,
       defaultErrorHandler: false,
     });
