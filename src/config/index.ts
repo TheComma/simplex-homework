@@ -1,5 +1,7 @@
 import { config } from 'dotenv';
 config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
 
-export const CREDENTIALS = process.env.CREDENTIALS === 'true';
-export const { NODE_ENV, PORT, SECRET_KEY, LOG_FORMAT, LOG_DIR, ORIGIN } = process.env;
+export const CACHE_MAX_SIZE = +process.env.CACHE_MAX_SIZE;
+export const TTL_FOR_CACHE_RECORD = +process.env.TTL_FOR_CACHE_RECORD;
+
+export const { NODE_ENV, PORT, LOG_FORMAT, LOG_DIR, EXCHANGE_RATE_API_URL } = process.env;
