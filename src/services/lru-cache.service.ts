@@ -1,3 +1,5 @@
+import { logger } from '@/utils/logger';
+
 class LruCache<K, V> {
   constructor(size: number, ttl: number) {
     this.size = size;
@@ -10,7 +12,11 @@ class LruCache<K, V> {
 
   public get(key: K): V | undefined {
     const entry = this.values.get(key);
-    if (!entry || Date.now() > entry[1]) {
+    if (!entry) {
+      return undefined;
+    } else if (Date.now() > entry[1]) {
+      logger.debug(`${key} is outdated. Deleting.`);
+      this.values.delete(key);
       return undefined;
     } else {
       this.values.delete(key);
@@ -21,10 +27,9 @@ class LruCache<K, V> {
 
   public put(key: K, value: V) {
     if (this.values.size === this.size) {
-      console.info(`Cache size: ${this.values.size}. Need to evict.`);
       // least-recently used cache eviction strategy
       const keyToDelete = this.values.keys().next().value;
-      console.info(`Deleting key: ${keyToDelete}`);
+      logger.debug(`Cache size: ${this.values.size}. Deleting key: ${keyToDelete}`);
 
       this.values.delete(keyToDelete);
     }
