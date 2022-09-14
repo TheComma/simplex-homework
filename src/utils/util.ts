@@ -17,3 +17,7 @@ export const isEmpty = (value: string | number | object): boolean => {
     return false;
   }
 };
+
+export const roundWithPrecision = (roundNumber: number, precision: number): number => {
+  return Math.round(roundNumber * Math.pow(10, precision)) / Math.pow(10, precision);
+};
