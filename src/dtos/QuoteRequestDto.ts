@@ -1,5 +1,6 @@
 import { Currency } from '@/interfaces/quote.interface';
-import { IsEnum, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEnum, IsInt } from 'class-validator';
 
 export class QuoteRequestDto {
   @IsEnum(Currency, { message: 'Invalid currency, supported currencies: USD, EUR, GBP, ILS' })
@@ -8,6 +9,7 @@ export class QuoteRequestDto {
   @IsEnum(Currency, { message: 'Invalid currency, supported currencies: USD, EUR, GBP, ILS' })
   quoteCurency: string;
 
-  @IsString()
-  baseAmount: string;
+  @IsInt()
+  @Type(() => Number)
+  baseAmount: number;
 }
