@@ -27,6 +27,7 @@ export class QuoteService {
       const exchangeRate = await this.exchangeRateService.retrieveExchangeRate(quoteRequest.baseCurrency, quoteRequest.quoteCurency);
       logger.info(`${quoteRequest.baseCurrency} / ${quoteRequest.quoteCurency} exchange rate was retrievd from API. Inserting into cache.`);
       lruCache.put([quoteRequest.baseCurrency, quoteRequest.quoteCurency], exchangeRate);
+      return exchangeRate;
     }
   }
 }
