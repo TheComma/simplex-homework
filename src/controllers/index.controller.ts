@@ -1,4 +1,4 @@
-import { QuoteRequestDto } from '@/dtos/QuoteRequestDto';
+import { QuoteRequest } from '@/models/QuoteRequest';
 import { validationMiddleware } from '@/middlewares/validation.middleware';
 import { Controller, Get, QueryParams, UseBefore } from 'routing-controllers';
 import { QuoteService } from '@/services/quote.service';
@@ -14,8 +14,8 @@ export class IndexController {
   }
 
   @Get('/quote')
-  @UseBefore(validationMiddleware(QuoteRequestDto, 'query'))
-  async calculateQuote(@QueryParams() request: QuoteRequestDto) {
+  @UseBefore(validationMiddleware(QuoteRequest, 'query'))
+  async calculateQuote(@QueryParams() request: QuoteRequest) {
     return this.quoteService.calculateQuote(request);
   }
 }

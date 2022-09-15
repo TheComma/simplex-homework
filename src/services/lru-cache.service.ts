@@ -1,10 +1,13 @@
+import { CACHE_MAX_SIZE, TTL_FOR_CACHE_RECORD } from '@/config';
 import { logger } from '@/utils/logger';
+import { Service } from 'typedi';
 
-class LruCache<K, V> {
-  constructor(size: number, ttl: number) {
-    this.size = size;
+@Service()
+export class LruCache<K, V> {
+  constructor() {
+    this.size = CACHE_MAX_SIZE;
     this.values = new Map<K, [V, number]>();
-    this.ttl = ttl;
+    this.ttl = TTL_FOR_CACHE_RECORD;
   }
   private values: Map<K, [V, number]>;
   private size;
@@ -35,7 +38,9 @@ class LruCache<K, V> {
     }
     this.values.set(key, [value, Date.now() + this.ttl]);
   }
-}
-const lruCache = new LruCache<[string, string], number>(5, 1000);
 
-export default lruCache;
+  //For testing purposes
+  public clean() {
+    this.values.clear();
+  }
+}
