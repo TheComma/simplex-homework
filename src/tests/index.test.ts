@@ -8,7 +8,7 @@ import Container from 'typedi';
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe('Testing Index', () => {
+describe('Testing Homework', () => {
   describe('[GET] /health', () => {
     it('response statusCode 200 when checking status health', () => {
       const app = new App([IndexController]);
@@ -63,6 +63,16 @@ describe('Testing Index', () => {
       return request(app.getServer()).get('/quote?baseCurrency=RUB&quoteCurency=EUR&baseAmount=100').expect(400);
     });
 
+    test('response status code 200 when sending quote with same currencies', () => {
+      const app = new App([IndexController]);
+
+      return request(app.getServer())
+        .get('/quote?baseCurrency=EUR&quoteCurency=EUR&baseAmount=100')
+        .expect(200, { exchangeRate: 1, quoteAmount: 100 });
+    });
+  });
+
+  describe('Cache tests', () => {
     test('response statusCode 200 and exchange service called once after requesting 2 different USD requests', async () => {
       const getResponse = {
         status: 200,
@@ -72,6 +82,7 @@ describe('Testing Index', () => {
           rates: {
             EUR: 1.01,
             GBP: 1.02,
+            ILS: 1.03,
           },
         },
       };
@@ -104,17 +115,18 @@ describe('Testing Index', () => {
         },
       };
 
-      mockedAxios.get.mockResolvedValue(getResponse);
-
       const exchangeService = jest.spyOn(ExchangeRateService.prototype, 'retrieveExchangeRates');
 
       const app = new App([IndexController]);
       const server = app.getServer();
 
+      mockedAxios.get.mockResolvedValueOnce(getResponse);
       await request(server).get('/quote?baseCurrency=USD&quoteCurency=EUR&baseAmount=100').expect(200, { exchangeRate: 1.01, quoteAmount: 101 });
 
+      mockedAxios.get.mockResolvedValueOnce(getResponse);
       await request(server).get('/quote?baseCurrency=EUR&quoteCurency=ILS&baseAmount=100').expect(200, { exchangeRate: 1.03, quoteAmount: 103 });
 
+      mockedAxios.get.mockResolvedValueOnce(getResponse);
       await request(server).get('/quote?baseCurrency=USD&quoteCurency=GBP&baseAmount=100').expect(200, { exchangeRate: 1.02, quoteAmount: 102 });
 
       return expect(exchangeService).toHaveBeenCalledTimes(3);

@@ -5,6 +5,7 @@ import { roundWithPrecision } from '@/utils/util';
 import { Service } from 'typedi';
 import { ExchangeRateService } from './exchange-rate.service';
 import { LruCache } from './lru-cache.service';
+import { HttpException } from '@/exceptions/HttpException';
 
 @Service({ transient: true })
 export class QuoteService {
@@ -35,7 +36,12 @@ export class QuoteService {
         this.lruCache.put(`${quoteRequest.baseCurrency}/${currency}`, rate);
       });
 
-      return exchangeRates.get(quoteRequest.quoteCurency);
+      const rate = exchangeRates.get(quoteRequest.quoteCurency);
+      if (rate) {
+        return rate;
+      } else {
+        throw new HttpException(404, `Rate for exchage ${quoteRequest.baseCurrency} / ${quoteRequest.quoteCurency} not found`);
+      }
     }
   }
 }
