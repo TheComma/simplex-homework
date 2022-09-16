@@ -23,7 +23,6 @@ export class IndexController {
     description: 'Endpoint to get quote for provided currencies',
   })
   @UseBefore(validationMiddleware(QuoteRequest, 'query'))
-  @ResponseSchema(Quote)
   async calculateQuote(@QueryParams() request: QuoteRequest) {
     return await this.quoteService.calculateQuote(request);
   }
