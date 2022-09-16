@@ -1,5 +1,5 @@
 import { QuoteRequest } from '@/models/QuoteRequest';
-import { Quote } from '@/interfaces/quote.interface';
+import { Quote } from '@/models/quote.interface';
 import { logger } from '@/utils/logger';
 import { roundWithPrecision } from '@/utils/util';
 import { Service } from 'typedi';
