@@ -20,6 +20,14 @@ To run this project, you will need to add the following environment variables to
 
 Example values can be found in .env.sample.local
 
+## Run tests
+
+Just run
+
+```bash
+  yarn test
+```
+
 ## Run Locally
 
 Clone the project
